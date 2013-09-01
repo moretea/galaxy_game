@@ -3,10 +3,10 @@
 -include_lib("eunit/include/eunit.hrl").
 
 galaxy_game_test_() ->
-    P = [mercury, venus, earth, mars],
-    S = [venus, earth],
+    P  = [mercury, venus, earth, mars],
+    S  = [venus, earth],
     As = [{mercury, venus}, {venus, earth}],
-    A = [{nuclear, venus}, {laser, earth}],
+    A  = [{nuclear, venus}, {laser, earth}],
     Exp = [earth, mars],
     [
         {setup, 

@@ -20,11 +20,7 @@
 -module(galaxy_game).
 
 -include_lib("eunit/include/eunit.hrl").
-
--type planet()::atom().
--type shield()::planet().
--type alliance()::{planet(), planet()}.
--type attack()::{laser | nuclear, planet()}.
+-include("types.hrl").
 
 -export([setup_universe/3, teardown_universe/1, simulate_attack/2]).
 
@@ -36,7 +32,19 @@
 -spec setup_universe([planet()], [shield()], [alliance()]) -> ok.
 %% @end
 setup_universe(Planets, Shields, Alliances) ->
-    unimplemented.
+  % Create planets
+  lists:foreach(fun(Planet) ->
+    planet:use_genesis_device(Planet)
+  end, Planets),
+  % Add shields to planets
+  lists:foreach(fun(ShieldedPlanet) ->
+    planet:raise_shields(ShieldedPlanet)
+  end, Shields),
+  % Forge alliances.
+  lists:foreach(fun({Planet, OtherPlanet}) ->
+    planet:ally_with(Planet, OtherPlanet)
+  end, Alliances),
+  ok.
 
 %% @doc Clean up a universe simulation.
 %% This function will only be called after calling setup_universe/3 with the
@@ -46,7 +54,10 @@ setup_universe(Planets, Shields, Alliances) ->
 -spec teardown_universe([planet()]) -> ok.
 %% @end
 teardown_universe(Planets) ->
-    unimplemented.
+  lists:foreach(fun(Planet) ->
+    planet:death_star_it(Planet)
+  end, Planets),
+  ok.
 
 %% @doc Simulate an attack.
 %% This function will only be called after setting up a universe with the same
@@ -55,5 +66,9 @@ teardown_universe(Planets) ->
 -spec simulate_attack([planet()], [attack()]) -> Survivors::[planet()].
 %% @end
 simulate_attack(Planets, Actions) ->
-    unimplemented.
-
+  lists:foreach(fun({Weapon, Planet}) ->
+    planet:attack(Planet, Weapon)
+  end, Actions),
+  lists:filter(fun(Planet) ->
+    whereis(Planet) /= undefined
+  end, Planets).

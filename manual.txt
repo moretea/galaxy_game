@@ -1,0 +1,8 @@
+l(planet),
+l(galaxy_game),
+Planets=[mercury,uranus,venus, earth],
+Shields=[mercury,uranus],
+Alliances=[{mercury, uranus}, {venus, earth}],
+Actions=[{nuclear,mercury},{laser,venus}, {laser, uranus}],
+galaxy_game:setup_universe(Planets,Shields, Alliances),
+galaxy_game:simulate_attack(Planets, Actions).

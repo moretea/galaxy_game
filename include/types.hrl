@@ -1,0 +1,4 @@
+-type planet()::atom().
+-type shield()::planet().
+-type alliance()::{planet(), planet()}.
+-type attack()::{laser | nuclear, planet()}.
